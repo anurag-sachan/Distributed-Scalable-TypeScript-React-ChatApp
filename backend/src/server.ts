@@ -1,8 +1,19 @@
 import { WebSocketServer, WebSocket } from "ws";
+import { createClient } from "redis";
 
-const wss = new WebSocketServer({port:8080});
+const pub = createClient();
+const sub = createClient();
+
+pub.connect();
+sub.connect();
+
+const wss = new WebSocketServer({port:8082});
 let userCount=1;
 let allSockets: WebSocket[] = [];
+
+sub.subscribe("chat", async(message)=>{
+    await allSockets.forEach(socket=>socket.send(message.toString()));
+})
 
 wss.on("connection",(ws)=>{
     allSockets.push(ws); //for broadcasting
@@ -12,6 +23,6 @@ wss.on("connection",(ws)=>{
 
     ws.on("message",(data)=>{
         console.log(data.toString());
-        allSockets.forEach(socket=>socket.send(data.toString()));
+        pub.publish("chat", data.toString()); //publish to pub-sub
     });
 });
