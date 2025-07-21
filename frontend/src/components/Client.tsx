@@ -9,7 +9,7 @@ export default function Chat() {
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080/");
+    ws.current = new WebSocket("ws://localhost:8082/");
 
     ws.current.onerror = console.error;
 
