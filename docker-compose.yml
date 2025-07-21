@@ -1,0 +1,22 @@
+version: "3"
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+

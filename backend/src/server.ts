@@ -1,28 +1,33 @@
 import { WebSocketServer, WebSocket } from "ws";
 import { createClient } from "redis";
 
-const pub = createClient();
-const sub = createClient();
+const pub = createClient({ url: 'redis://redis:6379' });
+const sub = createClient({ url: 'redis://redis:6379' });
 
-pub.connect();
-sub.connect();
+async function start() {
+  try {
+    await pub.connect();
+    await sub.connect();
 
-const wss = new WebSocketServer({port:8082});
-let userCount=1;
-let allSockets: WebSocket[] = [];
-
-sub.subscribe("chat", async(message)=>{
-    await allSockets.forEach(socket=>socket.send(message.toString()));
-})
-
-wss.on("connection",(ws)=>{
-    allSockets.push(ws); //for broadcasting
-
-    console.log("User "+userCount++ +": connected!");
-    ws.on("error", console.error);
-
-    ws.on("message",(data)=>{
-        console.log(data.toString());
-        pub.publish("chat", data.toString()); //publish to pub-sub
+    const wss = new WebSocketServer({ port: 8080 });
+    wss.on("connection", (ws: WebSocket) => {
+      ws.on("message", async (message) => {
+        await pub.publish("chat", message.toString());
+      });
     });
-});
+
+    sub.subscribe("chat", (message) => {
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(message);
+        }
+      });
+    });
+
+    console.log("WebSocket server running on ws://localhost:8080");
+  } catch (err) {
+    console.error("Failed to connect to Redis:", err);
+  }
+}
+
+start();
