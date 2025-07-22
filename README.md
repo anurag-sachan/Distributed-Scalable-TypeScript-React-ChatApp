@@ -41,5 +41,5 @@ OR
 - kubectl apply -f k8s/redis/
 
 3. Access service (backend/ frontend)
-minikube service frontend-service
+- minikube service frontend-service
 
