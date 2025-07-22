@@ -13,18 +13,18 @@ docker run --name redis -p 6379:6379 -d redis
 1. Tag & Push Dockerfile (Image) to DockerHub
 <!-- Minikube : you can load images directly without pushing. -->
 <!-- Alternatively, if you want to skip DockerHub and load directly into Minikube: -->
-<!-- image is built inside the Minikube VM/container without needing to push to Docker Hub-->
-eval $(minikube docker-env)
-docker build -t ws-chatapp-backend ./backend
-docker build -t ws-chatapp-frontend ./frontend
+<!-- image is built inside the Minikube VM/container without needing to push to Docker Hub- -->
+- eval $(minikube docker-env)
+- docker build -t ws-chatapp-backend ./backend
+- docker build -t ws-chatapp-frontend ./frontend
 
 # Tag and push backend Dockerfile Image to Docker Hub 
-docker tag ws-chatapp-backend yourdockerhub/ws-chatapp-backend
-docker push yourdockerhub/ws-chatapp-backend
+- docker tag ws-chatapp-backend yourdockerhub/ws-chatapp-backend
+- docker push yourdockerhub/ws-chatapp-backend
 
 # Tag and push frontend Dockerfile Image to Docker Hub
-docker tag ws-chatapp-frontend yourdockerhub/ws-chatapp-frontend
-docker push yourdockerhub/ws-chatapp-frontend
+- docker tag ws-chatapp-frontend yourdockerhub/ws-chatapp-frontend
+- docker push yourdockerhub/ws-chatapp-frontend
 
 <!-- could be on base folder directly -->
 2. deployment.yml & service.yml : could be individually or combined (check k8s/)
