@@ -46,6 +46,6 @@ OR
 3. Access service (backend/ frontend)
 - minikube service frontend-service
 
-Thanks,
+Thanks, <br/>
 Anurag.
 
