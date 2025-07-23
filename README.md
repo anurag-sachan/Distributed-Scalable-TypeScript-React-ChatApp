@@ -1,3 +1,6 @@
+⚠️ CURRENTLY, NGINX IS NOT CONFIGURED PROPERLY
+___________________________________________
+
 1. For scaling: multiple servers + Redis PUB-SUB
 docker run --name redis -p 6379:6379 -d redis 
 
@@ -42,4 +45,7 @@ OR
 
 3. Access service (backend/ frontend)
 - minikube service frontend-service
+
+Thanks,
+Anurag.
 
